@@ -1,7 +1,7 @@
 package main
 
 import(
-	"github.com/k1574/gomtool/m/multitool"
+	"github.com/surdeus/gomtool/src/multitool"
 	"strconv"
 	"fmt"
 )

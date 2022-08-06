@@ -1,3 +1,3 @@
-module github.com/k1574/gomtool
+module github.com/surdeus/gomtool
 
 go 1.18
