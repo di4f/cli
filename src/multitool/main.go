@@ -6,8 +6,13 @@ import(
 	"path"
 )
 
+type Tool struct {
+	Handler func(args []string)
+	Desc string
+}
 
-type Tools map[string] func(args []string)
+
+type Tools map[string] Tool
 
 func Main(name string, m Tools) {
 	var(
@@ -20,8 +25,8 @@ func Main(name string, m Tools) {
 		args = os.Args[:]
 	} else {
 		if len(os.Args)<2  {
-			for k, _ := range m {
-				fmt.Printf("%s\n", k)
+			for k, v := range m {
+				fmt.Printf("%s:\t%s\n", k, v.Desc)
 			}
 			os.Exit(0)
 		}
@@ -34,6 +39,6 @@ func Main(name string, m Tools) {
 		os.Exit(1)
 	}
 
-	m[utilName](args)
+	m[utilName].Handler(args)
 }
 
