@@ -19,8 +19,9 @@ func Main(name string, m Tools) {
 		utilName string
 		args []string
 	)
-
-	if binBase := path.Base(os.Args[0]) ; binBase != name {
+	binBase := path.Base(os.Args[0]) ;
+	binBase = binBase[:len(binBase)-len(path.Ext(binBase))]
+	if binBase != name {
 		utilName = binBase
 		args = os.Args[:]
 	} else {
