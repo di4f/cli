@@ -3,7 +3,7 @@ package multitool
 import(
 	"fmt"
 	"os"
-	"path"
+	path "path/filepath"
 )
 
 type Tool struct {
