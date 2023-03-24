@@ -30,6 +30,10 @@ func (flags *Flags) Parse() {
 	flags.parsedArgs = flags.FlagSet.Args()
 }
 
+func (flags *Flags) AllArgs() []string {
+	return flags.args
+}
+
 func (flags *Flags) Args() []string {
 	return flags.parsedArgs
 }
