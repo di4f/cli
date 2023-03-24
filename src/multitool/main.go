@@ -5,6 +5,7 @@ import(
 	"os"
 	path "path/filepath"
 	"flag"
+	"sort"
 )
 
 type Flags struct {
@@ -34,9 +35,19 @@ func Main(name string, m Tools) {
 		args = os.Args[:]
 	} else {
 		if len(os.Args)<2  {
-			for k, v := range m {
-				fmt.Printf("%s:\t%s\n", k, v.Desc)
+			keys := make([]string, len(m))
+			i := 0
+			for k, _ := range m {
+				keys[i] = k
+				i++
 			}
+			sort.Strings(keys)
+			
+			for _, k := range keys {
+				tool := m[k]
+				fmt.Printf("%s: %s\n", k, tool.Desc)
+			}
+			
 			os.Exit(0)
 		}
 		utilName = os.Args[1]
