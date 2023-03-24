@@ -1,4 +1,4 @@
-package multitool
+package mtool
 
 import(
 	"fmt"

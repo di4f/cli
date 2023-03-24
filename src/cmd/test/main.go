@@ -1,7 +1,7 @@
 package main
 
 import(
-	mtool "github.com/surdeus/gomtool/src/multitool"
+	"github.com/surdeus/gomtool/src/mtool"
 	"strconv"
 	"fmt"
 )
