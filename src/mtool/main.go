@@ -10,9 +10,11 @@ import(
 
 type Flags struct {
 	*flag.FlagSet
+	args []string
+	parsedArgs []string
 }
 
-type Handler func(args []string, flags *Flags)
+type Handler func(*Flags)
 
 type Tool struct {
 	Handler Handler
@@ -20,6 +22,15 @@ type Tool struct {
 }
 
 type Tools map[string] Tool
+
+func (flags *Flags) Parse() {
+	flags.FlagSet.Parse(flags.args)
+	flags.parsedArgs = flags.FlagSet.Args()
+}
+
+func (flags *Flags) Args() []string {
+	return flags.parsedArgs
+}
 
 func Main(name string, m Tools) {
 	var(
@@ -65,6 +76,8 @@ func Main(name string, m Tools) {
 	flagSet := flag.NewFlagSet(arg1, flag.ExitOnError)
 	flags := &Flags{
 		flagSet,
+		[]string{},
+		[]string{},
 	}
 	flags.Usage = func() {
 		out := flags.Output()
@@ -102,8 +115,8 @@ func Main(name string, m Tools) {
 		os.Exit(1)
 	}
 	
-	args = args[1:]
+	flags.args = args[1:]
 	
-	util.Handler(args, flags)
+	util.Handler(flags)
 }
 
