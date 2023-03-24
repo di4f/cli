@@ -10,6 +10,8 @@ import(
 
 type Flags struct {
 	*flag.FlagSet
+	progName string
+	utilName string
 	args []string
 	parsedArgs []string
 }
@@ -30,6 +32,14 @@ func (flags *Flags) Parse() {
 
 func (flags *Flags) Args() []string {
 	return flags.parsedArgs
+}
+
+func (flags *Flags) ProgName() string {
+	return flags.progName
+}
+
+func (flags *Flags) UtilName() string {
+	return flags.utilName
 }
 
 func Main(name string, m Tools) {
@@ -75,9 +85,7 @@ func Main(name string, m Tools) {
 	arg1 := os.Args[1]
 	flagSet := flag.NewFlagSet(arg1, flag.ExitOnError)
 	flags := &Flags{
-		flagSet,
-		[]string{},
-		[]string{},
+		FlagSet : flagSet,
 	}
 	flags.Usage = func() {
 		out := flags.Output()
@@ -115,6 +123,8 @@ func Main(name string, m Tools) {
 		os.Exit(1)
 	}
 	
+	flags.progName = name
+	flags.utilName = args[0]
 	flags.args = args[1:]
 	
 	util.Handler(flags)
