@@ -53,7 +53,7 @@ func Main(name string, m Tools) {
 	binBase = binBase[:len(binBase)-len(path.Ext(binBase))]
 	if binBase != name {
 		utilName = binBase
-		args = os.Args[:]
+		args = os.Args
 	} else {
 		if len(os.Args)<2  {
 			keys := make([]string, len(m))
@@ -82,8 +82,7 @@ func Main(name string, m Tools) {
 
 	util := m[utilName]
 	
-	arg1 := os.Args[1]
-	flagSet := flag.NewFlagSet(arg1, flag.ExitOnError)
+	flagSet := flag.NewFlagSet(utilName, flag.ExitOnError)
 	flags := &Flags{
 		FlagSet : flagSet,
 	}
@@ -99,7 +98,7 @@ func Main(name string, m Tools) {
 		fmt.Fprintf(
 			out,
 			"Usage of %s:\n\t%s",
-			arg1, arg1,
+			utilName, utilName,
 		)
 		if hasOptions {
 			fmt.Fprintf(out, " [options]")
@@ -124,7 +123,7 @@ func Main(name string, m Tools) {
 	}
 	
 	flags.progName = name
-	flags.utilName = args[0]
+	flags.utilName = utilName
 	flags.args = args[1:]
 	
 	util.Handler(flags)
