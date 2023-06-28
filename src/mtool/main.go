@@ -25,9 +25,10 @@ type Tool struct {
 
 type Tools map[string] Tool
 
-func (flags *Flags) Parse() {
+func (flags *Flags) Parse() []string {
 	flags.FlagSet.Parse(flags.args)
 	flags.parsedArgs = flags.FlagSet.Args()
+	return flags.parsedArgs
 }
 
 func (flags *Flags) AllArgs() []string {
