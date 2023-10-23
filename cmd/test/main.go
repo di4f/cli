@@ -1,27 +1,27 @@
 package main
 
-import(
-	"github.com/mojosa-software/gomtool/src/mtool"
+import (
+	"github.com/reklesio/mtool"
 	"strconv"
 	"fmt"
 )
 
-var(
+var (
 	tools = mtool.Tools{
-		"echo" : mtool.Tool{
+		"echo": mtool.Tool{
 			func(flags *mtool.Flags) {
 				var b bool
 				flags.BoolVar(&b, "b", false, "the check flag")
 				flags.Parse()
-				
+
 				args := flags.Args()
-				
+
 				fmt.Println(args)
 			},
 			"print string to standard output string",
 			"[str1 str2 ... strN]",
 		},
-		"sum" : mtool.Tool{
+		"sum": mtool.Tool{
 			func(flags *mtool.Flags) {
 				flags.Parse()
 				args := flags.Args()
@@ -38,4 +38,3 @@ var(
 func main() {
 	mtool.Main("test", tools)
 }
-

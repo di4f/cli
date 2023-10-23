@@ -1,3 +1,3 @@
-module github.com/mojosa-software/gomtool
+module github.com/reklesio/mtool
 
 go 1.18

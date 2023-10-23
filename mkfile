@@ -1,3 +1,0 @@
-<mkconfig
-<$MKINCDIR/gobuild
-
