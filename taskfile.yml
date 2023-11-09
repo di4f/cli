@@ -1,0 +1,7 @@
+version: '3'
+
+tasks:
+  btest:
+    cmds:
+      - go build ./cmd/test
+
