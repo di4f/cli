@@ -1,3 +1,3 @@
-module github.com/reklesio/mtool
+module github.com/omnipunk/cli
 
 go 1.18

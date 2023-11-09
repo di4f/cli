@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/reklesio/mtool"
+	"github.com/omnipunk/cli"
 	"strconv"
 	"fmt"
 )
