@@ -15,15 +15,14 @@ var (
 				args := flags.Parse()
 				fmt.Println(args)
 			}).Desc(
-				"print string to standard output string",
+				"print string array to standard output",
 			).Usage(
 				"[str1 str2 ... strN]",
 			),
 		mtool.T("sum").Func(func(flags *mtool.Flags) {
-				flags.Parse()
-				args := flags.Args()
-				one, _ := strconv.Atoi(args[1])
-				two, _ := strconv.Atoi(args[2])
+				args := flags.Parse()
+				one, _ := strconv.Atoi(args[0])
+				two, _ := strconv.Atoi(args[1])
 				fmt.Println(one + two)
 			}).Desc(
 				"add one value to another",
@@ -34,18 +33,21 @@ var (
 			mtool.T("first").Func(func(flags *mtool.Flags) {
 					fmt.Println("called the first", flags.Parse())
 				}).Desc(
-					"description",
-				).Usage(
-					"[nothing here]",
+					"first sub tool",
 				),
 			mtool.T("second").Func(func(flags *mtool.Flags){
 					fmt.Println("called the second", flags.Parse())
 				}).Desc(
-					"description",
-				).Usage(
-					"[nothing here]",
+					"second sub tool",
 				),
-			),
+		).Desc(
+			"the tool to demonstrate how subtools work",
+		),
+	).Desc(
+		"the testing program to show how to use the lib",
+	).Ldesc(
+		"this is the long description where you "+
+			"can put anything you want about the program",
 	)
 )
 

@@ -31,7 +31,7 @@ func (fn HandlerFunc) Handle(flags *Flags) {
 type Tool struct {
 	name string
 	handler Handler
-	desc, usage string
+	desc, ldesc, usage string
 	subs ToolMap
 	parent *Tool
 }
@@ -55,6 +55,11 @@ func (t *Tool) Func(fn HandlerFunc) *Tool {
 
 func (t *Tool) Desc(d string) *Tool {
 	t.desc = d
+	return t
+}
+
+func (t *Tool) Ldesc(d string) *Tool {
+	t.ldesc = d
 	return t
 }
 
@@ -92,6 +97,10 @@ func (t *Tool) FullName() string {
 	return ret
 }
 
+func (t *Tool) IsRoot() bool {
+	return t.parent == nil
+}
+
 func (t *Tool) ProgName() string {
 	for t.parent != nil {
 		t = t.parent
@@ -114,15 +123,21 @@ func (t *Tool) Run(args []string) {
 	out := flags.Output()
 	flags.Usage = func() {
 		n := 0
-		// We can visit the flags since the
-		// function will be called after 
-		// parsing.
 		flags.VisitAll(func(f *flag.Flag){
 			n++
 		})
-		
 		hasOptions := n != 0
+
+		// Name
+		if usageTool.desc != "" {
+			fmt.Fprintf(
+				out, "Name:\n  %s - %s\n\n",
+				usageTool.FullName(), t.desc,
+			)
+		}
 		
+
+		// Usage
 		fmt.Fprintf(
 			out, "Usage:\n  %s",
 			usageTool.FullName(),
@@ -140,13 +155,17 @@ func (t *Tool) Run(args []string) {
 		}
 
 		fmt.Fprintln(out, "")
+
+		if usageTool.ldesc != "" {
+			fmt.Fprintf(out, "Description:\n  %s", usageTool.ldesc)
+		}
 		
+		// Options
 		if hasOptions {
 			fmt.Fprintln(out, "\nOptions:")
 			flags.PrintDefaults()
 		}
 		
-		os.Exit(1)
 	}
 	
 	flags.args = args
@@ -168,15 +187,27 @@ func (t *Tool) Run(args []string) {
 			i++
 		}
 		sort.Strings(keys)
-		
+
+		if t.desc != "" {
+			fmt.Fprintf(
+				out, "Name:\n  %s - %s\n\n",
+				t.FullName(), t.desc,
+			)
+		}
+
 		fmt.Fprintf(out, "Usage:\n"+
-			"  %s <command> [options] [arguments]\n\n" +
-			"Commands:\n", t.FullName())
-		for i, k := range keys {
-			tool := t.subs[k]
-			fmt.Fprintf(out, "  %s\t%s\n", k, tool.desc)
-			if i != len(keys) - 1 {
-				fmt.Fprintln(out, "")
+			"  %s <command>\n", t.FullName())
+
+		if t.ldesc != "" {
+			fmt.Fprintf(out, "\nDescription:\n  %s\n", t.ldesc)
+		}
+
+		if len(keys) > 0 {
+			fmt.Fprint(out, "\nCommands:\n")
+			for _, k := range keys {
+
+				tool := t.subs[k]
+				fmt.Fprintf(out, "  %s\t%s\n", k, tool.desc)
 			}
 		}
 		
