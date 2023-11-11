@@ -9,6 +9,8 @@ import (
 	//path "path/filepath"
 	"flag"
 	"sort"
+	"text/tabwriter"
+	"io"
 )
 
 
@@ -108,6 +110,23 @@ func (t *Tool) ProgName() string {
 	return t.name
 }
 
+func (t *Tool) PrintSubs(out io.Writer) {
+	w := new(tabwriter.Writer)
+	w.Init(out, 0, 0, 1, ' ', 0)
+	defer w.Flush()
+	keys := make([]string, len(t.subs))
+	i := 0
+	for k, _ := range t.subs {
+		keys[i] = k
+		i++
+	}
+	sort.Strings(keys)
+	for _, k := range keys {
+		tool := t.subs[k]
+		fmt.Fprintf(w, "  %s\t%s\n", k, tool.desc)
+	}
+}
+
 func (t *Tool) Run(args []string) {
 	var(
 		usageTool *Tool
@@ -180,13 +199,6 @@ func (t *Tool) Run(args []string) {
 	// Print available sub commands if
 	// got no arguments.
 	if len(args) == 0 {
-		keys := make([]string, len(t.subs))
-		i := 0
-		for k, _ := range t.subs {
-			keys[i] = k
-			i++
-		}
-		sort.Strings(keys)
 
 		if t.desc != "" {
 			fmt.Fprintf(
@@ -202,13 +214,9 @@ func (t *Tool) Run(args []string) {
 			fmt.Fprintf(out, "\nDescription:\n  %s\n", t.ldesc)
 		}
 
-		if len(keys) > 0 {
+		if len(t.subs) > 0 {
 			fmt.Fprint(out, "\nCommands:\n")
-			for _, k := range keys {
-
-				tool := t.subs[k]
-				fmt.Fprintf(out, "  %s\t%s\n", k, tool.desc)
-			}
+			t.PrintSubs(out)
 		}
 		
 		os.Exit(1)
