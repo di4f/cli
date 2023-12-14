@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/omnipunk/cli/mtool"
+	"github.com/di4f/cli/mtool"
 	"strconv"
 	"fmt"
 	"os"
@@ -35,7 +35,7 @@ var (
 			}).Desc(
 				"first sub tool",
 			),
-			mtool.T("second").Func(func(flags *mtool.Flags){
+			mtool.T("second").Func(func(flags *mtool.Flags) {
 				fmt.Println("called the second", flags.Parse())
 			}).Desc(
 				"second sub tool",
@@ -46,7 +46,7 @@ var (
 	).Desc(
 		"the testing program to show how to use the lib",
 	).Ldesc(
-		"this is the long description where you "+
+		"this is the long description where you " +
 			"can put anything you want about the program",
 	)
 )
