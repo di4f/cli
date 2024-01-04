@@ -1,3 +1,3 @@
-module github.com/di4f/cli
+module github.com/vultras/cli
 
 go 1.18
